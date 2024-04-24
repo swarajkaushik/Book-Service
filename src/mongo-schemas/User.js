@@ -2,6 +2,8 @@ const { Schema, mongoose } = require("mongoose");
 const validator = require("validator");
 const { compare, hash } = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const password_key = process.env.PASSWORD_KEY;
 
 const userSchema = new Schema({
   name: {
@@ -69,7 +71,7 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, "thisispassworksalting");
+  const token = jwt.sign({ _id: user._id.toString() }, password_key);
 
   user.tokens = user.tokens.concat({ token });
   await user.save();

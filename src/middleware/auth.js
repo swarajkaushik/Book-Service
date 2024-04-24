@@ -1,10 +1,12 @@
 const { verify } = require("jsonwebtoken");
 const User = require("../mongo-schemas/User");
+require("dotenv").config();
+const password_key = process.env.PASSWORD_KEY;
 
 const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = verify(token, "thisispassworksalting");
+    const decoded = verify(token, password_key);
     const user = await User.findOne({
       _id: decoded._id,
       "tokens.token": token,
