@@ -32,6 +32,9 @@ class BookService {
 
   async updateBook(bookId, payload) {
     try {
+      if (payload.owner) {
+        delete payload.owner;
+      }
       const result = await Book.findOneAndUpdate(
         {
           _id: bookId,

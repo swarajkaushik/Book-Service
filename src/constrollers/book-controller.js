@@ -3,7 +3,11 @@ const bookServiceIns = require("../services/index");
 class BookController {
   async postBook(req, res) {
     try {
-      const response = await bookServiceIns.postBook(req?.body);
+      const reqObj = {
+        ...req?.body,
+        owner: req.user._id,
+      };
+      const response = await bookServiceIns.postBook(reqObj);
       return res.status(201).json({
         data: response,
         success: true,
